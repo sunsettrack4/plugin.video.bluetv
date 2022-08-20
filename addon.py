@@ -48,7 +48,7 @@ def load_channels():
                 if item["Services"].get("OTT.LiveTV", {"State": ""})["State"] == "Subscribed"
                 and item["Visibility"] == "Visible"}
 
-    if __addon__.getSetting("favorites"):
+    if __addon__.getSetting("favorites") == "true":
         url = "https://services.sg101.prd.sctv.ch/portfolio/tv/lineups"
         favorites_page = requests.get(url, timeout=5, headers=ch_headers)
         for item in favorites_page.json():
