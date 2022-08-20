@@ -16,7 +16,7 @@
     <disclaimer lang="de_DE">Widevine wird für das Abspielen der Streams benötigt.</disclaimer>
     <platform>all</platform>
     <license>GPL-3.0-or-later</license>
-    <website>https://sky.ch</website>
+    <website>https://tv.blue.ch</website>
     <email>sunsettrack4@gmail.com</email>
     <source>http://github.com/sunsettrack4/plugin.video.bluetv</source>
     <news>v0.1.0 (20/08/2022)
