@@ -5,5 +5,6 @@
         <setting label="Email" type="text" id="username" default=""/>
         <setting label="Password" type="text" id="password" option="hidden"  enable="!eq(-1,)" default=""/>
         <setting label="Show favorite channels only" type="bool" id="favorites" default="false"/>
+        <setting label="Enable low quality mode for DRM-protected streams" type="bool" id="loq" default="true"/>
     </category>
 </settings>

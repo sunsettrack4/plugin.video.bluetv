@@ -43,7 +43,9 @@ def load_channels():
     channels = {item["Identifier"]: {"name": item["Title"], "genre": item["Bouquets"][0],
                                      "desc": item["Description"], 
                                      "logo_url": f"https://services.sg101.prd.sctv.ch/content/images/tv/"
-                                                 f"channel/{item['Identifier']}_w300.webp"}
+                                                 f"channel/{item['Identifier']}_w300.webp",
+                                     "drm": True if (item["ChannelShapes"][0].get("IsOTTEncrypted") 
+                                            or item["ChannelShapes"][0].get("IsEncrypted")) else False}
                 for item in live_page.json()
                 if item["Services"].get("OTT.LiveTV", {"State": ""})["State"] == "Subscribed"
                 and item["Visibility"] == "Visible"}
@@ -57,7 +59,7 @@ def load_channels():
 
     channel_listing = []
     for item in channels.keys():
-        url = build_url({'id': item})
+        url = build_url({'id': item, 'drm': channels[item]["drm"]})
         li = xbmcgui.ListItem(channels[item]["name"])
         li.setArt({"thumb": channels[item]['logo_url']})
         li.setInfo('video', {'title': channels[item]["name"], 'genre': channels[item]["genre"],
@@ -75,12 +77,17 @@ def get_stream(channel_id):
     if session == "":
         return
 
-    title = "blue TV (Live)"
+    title = "blue TV Air (Live)"
 
     ch_headers = headers
     ch_headers.update({"Authorization": f"Bearer {session}"})
 
-    url = f'https://services.sg1.etvp01.sctv.ch/streaming/liveTv/{channel_id}/dash_cas/0/42'
+    if __addon__.getSetting("loq") == "true":
+        manifest_type = "dash_loq_cas"
+    else:
+        manifest_type = "dash_cas"
+
+    url = f'https://services.sg1.etvp01.sctv.ch/streaming/liveTv/{channel_id}/{manifest_type}/0/42'
     
     page = requests.get(url, timeout=5, headers=ch_headers)
     channel_data = page.json()
@@ -160,7 +167,7 @@ def login():
 
     # Retrieve existing cookie from file
     if os.path.exists(f"{data_dir}/cookie.txt"):
-        if (int(os.path.getmtime(f"{data_dir}/cookie.txt")) - int(time())) > 2592000:
+        if (int(os.path.getmtime(f"{data_dir}/cookie.txt")) - int(time())) > 86400:
             os.remove(f"{data_dir}/cookie.txt")
         else:
             with open(f"{data_dir}/cookie.txt", "r") as file:
