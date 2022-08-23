@@ -43,9 +43,7 @@ def load_channels():
     channels = {item["Identifier"]: {"name": item["Title"], "genre": item["Bouquets"][0],
                                      "desc": item["Description"], 
                                      "logo_url": f"https://services.sg101.prd.sctv.ch/content/images/tv/"
-                                                 f"channel/{item['Identifier']}_w300.webp",
-                                     "drm": True if (item["ChannelShapes"][0].get("IsOTTEncrypted") 
-                                            or item["ChannelShapes"][0].get("IsEncrypted")) else False}
+                                                 f"channel/{item['Identifier']}_w300.webp"}
                 for item in live_page.json()
                 if item["Services"].get("OTT.LiveTV", {"State": ""})["State"] == "Subscribed"
                 and item["Visibility"] == "Visible"}
@@ -59,7 +57,7 @@ def load_channels():
 
     channel_listing = []
     for item in channels.keys():
-        url = build_url({'id': item, 'drm': channels[item]["drm"]})
+        url = build_url({'id': item})
         li = xbmcgui.ListItem(channels[item]["name"])
         li.setArt({"thumb": channels[item]['logo_url']})
         li.setInfo('video', {'title': channels[item]["name"], 'genre': channels[item]["genre"],
