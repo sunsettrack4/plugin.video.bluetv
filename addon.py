@@ -165,7 +165,7 @@ def login():
 
     # Retrieve existing cookie from file
     if os.path.exists(f"{data_dir}/cookie.txt"):
-        if (int(os.path.getmtime(f"{data_dir}/cookie.txt")) - int(time())) > 86400:
+        if (int(time() - int(os.path.getmtime(f"{data_dir}/cookie.txt")))) > 172800:
             os.remove(f"{data_dir}/cookie.txt")
         else:
             with open(f"{data_dir}/cookie.txt", "r") as file:

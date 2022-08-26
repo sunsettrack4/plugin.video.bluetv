@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.bluetv" name="blue TV Air (Live)" version="0.1.1" provider-name="Jan-Luca Neumann">
+<addon id="plugin.video.bluetv" name="blue TV Air (Live)" version="0.1.2" provider-name="Jan-Luca Neumann">
   <requires>
       <import addon="xbmc.python" version="3.0.0"/>
       <import addon="inputstream.adaptive"/> 
@@ -20,6 +20,9 @@
     <email>sunsettrack4@gmail.com</email>
     <source>http://github.com/sunsettrack4/plugin.video.bluetv</source>
     <news>
+    v0.1.2 (26/08/2022)
+      * Improve cookie/session handling
+
     v0.1.1 (23/08/2022)
       * Add low quality mode for DRM-protected streams
       * Session refresh rate increased
