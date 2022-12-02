@@ -229,7 +229,7 @@ def login():
                                                         "Token": session_dict["T"],
                                                         "TokenSignature": session_dict["TS"]}}))
 
-    session_cookie = session_result.cookies.get("Session")
+    session_cookie = session_result.json().get("Identifier")
 
     if not session_cookie:
         xbmcgui.Dialog().notification(__addonname__, "Unable to generate valid session token",
