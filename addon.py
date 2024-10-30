@@ -329,7 +329,14 @@ def login():
     session = session_result.json()
     
     if session.get("SsoAuthenticated"):
-        session_cookie = session["Identifier"]
+        try:
+            with open(f"{data_dir}/cookie.txt", "w") as file:
+                file.write(session["Identifier"])
+                file.close()
+            return session["Identifier"]
+        except:
+            xbmcgui.Dialog().notification(__addonname__, "Unable to generate valid session token",
+                                          xbmcgui.NOTIFICATION_ERROR)
     elif session.get("MultiStepLogin") and len(session["MultiStepLogin"].get("SelectableAccounts", [])) != 0:
         if len(session["MultiStepLogin"]["SelectableAccounts"][0]["ChangeableDevices"]) < 5:
             if session["MultiStepLogin"]["SelectableAccounts"][0].get("DeviceManagementState", "") == "NotUsable":
@@ -363,7 +370,7 @@ def login():
                 file.close()
             return session_cookie
         except:
-            xbmcgui.Dialog().notification(__addonname__, "Unable to generate valid session token",
+            xbmcgui.Dialog().notification(__addonname__, "Unable to generate valid session token (2)",
                                           xbmcgui.NOTIFICATION_ERROR)
             return ""
     else:
